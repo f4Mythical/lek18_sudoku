@@ -12,6 +12,7 @@ import android.widget.GridLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import java.util.Random;
 
@@ -101,7 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 int c = cellCounter % max;
                 int poprawnePoprawne = rozwiazanie[r][c];
                 cellCounter++;
-
                 editText.setTag(poprawnePoprawne);
 
                 if (random.nextInt(100) < 40) {
@@ -130,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
                                     editText.setBackgroundResource(R.drawable.bg_btn_wrong);
                                 }
                             }
+                            check();
                         }
                     });
                 }
@@ -137,6 +138,34 @@ public class MainActivity extends AppCompatActivity {
             }
             grid.addView(subGrid);
         }
+    }
+
+    private void check() {
+        for (int i = 0; i < grid.getChildCount(); i++) {
+            GridLayout subGrid = (GridLayout) grid.getChildAt(i);
+            for (int j = 0; j < subGrid.getChildCount(); j++) {
+                EditText editText = (EditText) subGrid.getChildAt(j);
+                String wpisane = editText.getText().toString();
+                String poprawne = String.valueOf(editText.getTag());
+
+                if (!wpisane.equals(poprawne)) {
+                    return;
+                }
+            }
+        }
+        win();
+    }
+
+    private void win() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Wygrana!");
+        builder.setMessage("Gratulacje! Wykonales sudoku poprawnie!");
+        builder.setCancelable(false);
+        builder.setPositiveButton("Graj ponowanie", (dialog, which) -> {
+            boardIndex = random.nextInt(3);
+            createButton();
+        });
+        builder.show();
     }
 
     private void ini() {
