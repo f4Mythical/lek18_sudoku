@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">sudoku</string>
+    <string-array name="type">
+        <item>2x2</item>
+        <item>3x3</item>
+    </string-array>
 </resources>
